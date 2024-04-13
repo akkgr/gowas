@@ -7,3 +7,7 @@ aws lambda create-function --function-name myFunction \
 --architectures arm64 \
 --role arn:aws:iam::761059477267:role/lambdaRole \
 --zip-file fileb://myFunction.zip
+
+aws lambda update-function-code --function-name myFunction \
+--zip-file fileb://myFunction.zip
+

@@ -11,6 +11,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
+	"github.com/aws/aws-xray-sdk-go/xray"
 )
 
 type Request struct {
@@ -32,8 +33,9 @@ func HandleRequest(ctx context.Context, event *Request) (*Response, error) {
 	}))
 
 	svc := dynamodb.New(sess)
+	xray.AWS(svc.Client)
 
-	result, err := svc.GetItem(&dynamodb.GetItemInput{
+	result, err := svc.GetItemWithContext(ctx, &dynamodb.GetItemInput{
 		TableName: aws.String("products"),
 		Key: map[string]*dynamodb.AttributeValue{
 			"id": {
@@ -47,7 +49,7 @@ func HandleRequest(ctx context.Context, event *Request) (*Response, error) {
 	}
 
 	if result.Item == nil {
-		msg := "Could not find '" + *&event.Id + "'"
+		msg := "Could not find '" + event.Id + "'"
 		return nil, errors.New(msg)
 	}
 
