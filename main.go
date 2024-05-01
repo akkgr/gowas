@@ -24,10 +24,15 @@ type Response struct {
 }
 
 func HandleRequest(ctx context.Context, event *Request) (*Response, error) {
-	log.Printf("Processing request data for id %s.\n", event.Id)
 	if event == nil {
 		return nil, fmt.Errorf("received nil event")
 	}
+
+	if event.Id == "" {
+		return nil, errors.New("id is required")
+	}
+
+	log.Printf("Processing request data for id %s.\n", event.Id)
 
 	sess := session.Must(session.NewSessionWithOptions(session.Options{
 		SharedConfigState: session.SharedConfigEnable,
