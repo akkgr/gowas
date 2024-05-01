@@ -24,6 +24,7 @@ type Response struct {
 }
 
 func HandleRequest(ctx context.Context, event *Request) (*Response, error) {
+	log.Printf("Processing request data for id %s.\n", event.Id)
 	if event == nil {
 		return nil, fmt.Errorf("received nil event")
 	}
@@ -60,6 +61,7 @@ func HandleRequest(ctx context.Context, event *Request) (*Response, error) {
 		log.Fatalf("Failed to unmarshal Record, %v", err)
 	}
 
+	log.Printf("Found item: %v\n", item)
 	return &item, nil
 }
 
