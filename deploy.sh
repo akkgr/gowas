@@ -1,4 +1,4 @@
-cd src
+cd cmd
 GOOS=linux GOARCH=arm64 go build -tags lambda.norpc -o ../artifacts/bootstrap main.go
 cd  ../artifacts
 zip myFunction.zip bootstrap
